@@ -7,16 +7,6 @@ import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    // TypeOrmModule.forRoot({
-    //     type: 'mysql',
-    //     host: 'reversedb.c3kuaa2ogp2y.eu-north-1.rds.amazonaws.com',
-    //     port: 3306,
-    //     username: 'admin',
-    //     password: 'mindArchitacture3000',
-    //     database: 'reverseDB',
-    //     entities: [],
-    //     synchronize: true,
-    //   }),
 
     TypeOrmModule.forRoot({
       type: 'mysql',
