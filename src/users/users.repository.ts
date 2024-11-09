@@ -1,37 +1,77 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersRepository {
   constructor(
-    @InjectRepository(User) private readonly userRepo: Repository<User>,
+    @InjectRepository(User) private readonly useRepository: Repository<User>,
   ) {}
-
   async create(createUserDto: CreateUserDto) {
-    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
-    const newUser = new User();
+    const newUser = this.useRepository.create(createUserDto);
+    newUser.password = await bcrypt.hash(newUser.password, 10);
 
-    newUser.username = createUserDto.username;
-    newUser.email = createUserDto.email;
-    newUser.password = hashedPassword;
+    try {
+      const result = await this.useRepository.save(newUser);
+      const { password, ...user } = result;
 
-    return this.userRepo.save(newUser);
+      return user;
+    } catch (err) {
+      if (err.errno === 1062) {
+        return 'es mail ukve arsebobs';
+      }
+    }
+  }
+
+  findByEmailRetunPassword(email: string) {
+    return this.useRepository.findOne({
+      where: { email: email },
+      select: {
+        email: true,
+        password: true,
+        username: true,
+        id: true,
+        numberOfAttempts: true,
+        userBlockedUntil: true,
+      },
+    });
+  }
+
+  async passwordNumberOfAttemptsCount(id: number, reset: boolean = false) {
+    const user = await this.useRepository.findOne({ where: { id: id } });
+
+    if (reset) {
+      user.numberOfAttempts = 0;
+    } else {
+      user.numberOfAttempts++;
+    }
+
+    await this.useRepository.update(user.id, user);
+  }
+
+  async UserBlockedDateCount(id: number, reset: boolean = false) {
+    const user = await this.useRepository.findOne({ where: { id: id } });
+
+    if (reset) {
+      user.userBlockedUntil = null;
+    } else {
+      user.userBlockedUntil = new Date();
+      user.userBlockedUntil.setSeconds(user.userBlockedUntil.getSeconds() + 30);
+    }
+
+    await this.useRepository.save(user);
   }
 
   findAll() {
-    return this.userRepo.find();
+    return `This action returns all users`;
   }
 
-  findOneByEmail(email: string) {
-    return this.userRepo.findOne({ where: { email: email } });
-  }
   findOne(id: number) {
-    return this.userRepo.findOne({ where: { id: id } });
+    return `This action returns a #${id} user`;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
@@ -39,6 +79,6 @@ export class UsersRepository {
   }
 
   remove(id: number) {
-    return this.userRepo.delete(id);
+    return `This action removes a #${id} user`;
   }
 }
