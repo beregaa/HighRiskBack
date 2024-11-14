@@ -1,5 +1,12 @@
 import { Type } from 'class-transformer';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { UserRole } from '../enums/user-role.enum';
 
 @Entity()
 export class User {
@@ -9,16 +16,30 @@ export class User {
   @Column()
   username: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
+
 
   @Column({ select: false })
   password: string;
 
+  @Column({ type: 'enum', enum: UserRole, default: UserRole.GUEST })
+  role: UserRole;
+
   @Column({ default: 0 })
   numberOfAttempts: number;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 
   @Type(() => Date)
   @Column({ type: 'timestamp', nullable: true, default: null })
   userBlockedUntil: Date;
+
+  @Type(() => Date)
+  @Column({ type: 'timestamp', nullable: true })
+  lastLogin: Date;
 }

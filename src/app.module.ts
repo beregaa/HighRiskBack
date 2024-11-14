@@ -8,10 +8,18 @@ import { Product } from './products/entities/product.entity';
 import { UsersModule } from './users/users.module';
 import { User } from './users/entities/user.entity';
 import { AuthModule } from './auth/auth.module';
+import { JwtModule } from '@nestjs/jwt';
+import { jwtConstants } from './auth/conststs';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
+
+    JwtModule.register({
+      global: true,
+      secret: jwtConstants.secret,
+      signOptions: { expiresIn: '3600s' },
+    }),
 
     TypeOrmModule.forRoot({
       type: 'mysql',

@@ -1,19 +1,26 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersRepository } from 'src/users/users.repository';
 import * as bcrypt from 'bcrypt';
-import { loginUserDto } from './dto/login-user.dto';
+import { signInDto } from './dto/signIn.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userRepository: UsersRepository) {}
+  constructor(
+    private readonly userRepository: UsersRepository,
+    private readonly jwtService: JwtService,
+  ) {}
 
-  async logInUser(data: loginUserDto) {
-    const user = await this.userRepository.findByEmailRetunPassword(data.email);
+  async logInUser(signInDto: signInDto) {
+    const user = await this.userRepository.findByEmailRetunPassword(
+      signInDto.email,
+    );
     const currentDate = new Date();
 
     if (!user) {
       throw new UnauthorizedException('Access Denied');
     }
+
 
     if (user.userBlockedUntil && user.userBlockedUntil > currentDate) {
       const timeLeft = user.userBlockedUntil.getTime() - currentDate.getTime();
@@ -27,7 +34,7 @@ export class AuthService {
     }
 
     const isPasswordCorrect = await bcrypt.compare(
-      data.password,
+      signInDto.password,
       user.password,
     );
 
@@ -46,10 +53,13 @@ export class AuthService {
     this.userRepository.passwordNumberOfAttemptsCount(user.id, true);
     this.userRepository.UserBlockedDateCount(user.id, true);
 
-    delete user.password;
-    delete user.numberOfAttempts;
-    delete user.userBlockedUntil;
+    const jwtToken = await this.jwtService.signAsync({
+      userId: user.id,
+      username: user.username,
+      userEmail: user.email,
+      userRole: user.role,
+    });
 
-    return user;
+    return jwtToken;
   }
 }
