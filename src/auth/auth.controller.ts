@@ -14,7 +14,8 @@ import { GuestGuard } from './gurds/guest.gurd';
 @UseGuards(GuestGuard)
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
-
+  
+  @HttpCode(HttpStatus.OK)
   @Post('login')
   loginUser(@Body() signInDto: signInDto) {
     return this.authService.logInUser(signInDto);
