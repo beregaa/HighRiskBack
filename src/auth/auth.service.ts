@@ -21,7 +21,6 @@ export class AuthService {
       throw new UnauthorizedException('Access Denied');
     }
 
-
     if (user.userBlockedUntil && user.userBlockedUntil > currentDate) {
       const timeLeft = user.userBlockedUntil.getTime() - currentDate.getTime();
 
@@ -60,6 +59,8 @@ export class AuthService {
       userRole: user.role,
     });
 
-    return jwtToken;
+    return {
+      accessToken: jwtToken,  
+    };
   }
 }
