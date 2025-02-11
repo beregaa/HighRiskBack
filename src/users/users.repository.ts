@@ -20,17 +20,11 @@ export class UsersRepository {
     newUser.password = await bcrypt.hash(newUser.password, 10);
 
     try {
-
-      console.log('bla');
-      
       const result = await this.useRepository.save(newUser);
       const { password, ...user } = result;
 
       return user;
     } catch (err) {
-
-      console.log(err , 'bula');
-      
       if (err.errno == 1062) {
         throw new BadRequestException('this emaii already exists');
       }
