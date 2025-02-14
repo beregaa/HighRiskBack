@@ -11,6 +11,18 @@ import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './auth/conststs';
 
+console.log({
+  type: 'mysql',
+  host: process.env.DATABASE_HOST,
+  port: +process.env.DATABASE_PORT,
+  username: process.env.DATABASE_USERNAME,
+  password: process.env.DATABASE_PASSWORD,
+  database: process.env.DATABASE_NAME,
+  entities: [Product, User],
+  synchronize: true,
+  logging: true, // Logs queries and errors
+});
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -30,6 +42,7 @@ import { jwtConstants } from './auth/conststs';
       database: process.env.DATABASE_NAME,
       entities: [Product, User],
       synchronize: true,
+      logging: true, // Logs queries and errors
     }),
 
     ProductsModule,
