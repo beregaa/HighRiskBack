@@ -1,9 +1,11 @@
 import {
   IsEmail,
-  IsNumber,
   IsString,
   Length,
-  IsPositive,
+  IsBoolean,
+  IsPhoneNumber,
+  Validate,
+  IsEnum,
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -13,6 +15,9 @@ export class CreateUserDto {
 
   @IsEmail()
   email: string;
+  
+  @IsEnum(Gender)
+  gender: Gender;
 
   @IsString()
   @Length(8, 20)
@@ -21,4 +26,10 @@ export class CreateUserDto {
   @IsString()
   @Length(8, 20)
   confirmPassword: string;
+
+  @IsBoolean()
+  termsAccepted: boolean;
+
+  @IsPhoneNumber('GE')
+  phoneNumber: string;
 }

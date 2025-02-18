@@ -22,6 +22,12 @@ export class User {
   @Column({ select: false })
   password: string;
 
+  @Column()
+  phoneNumber: string;
+
+  @Column({ type: 'enum', enum: Gender, default: Gender.OTHER })
+  Gender: Gender;
+
   @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
   role: UserRole;
 
