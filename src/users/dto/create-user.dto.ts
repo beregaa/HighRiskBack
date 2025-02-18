@@ -7,6 +7,7 @@ import {
   Validate,
   IsEnum,
 } from 'class-validator';
+import { Gender } from '../enums/user-gender.enum';
 
 export class CreateUserDto {
   @IsString()
