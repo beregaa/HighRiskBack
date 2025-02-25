@@ -13,6 +13,9 @@ import { AuthService } from './auth.service';
 import { signInDto } from './dto/signIn.dto';
 import { GuestGuard } from './gurds/guest.gurd';
 import { GoogleAuthGuard } from './guards/google-auth/google-auth.guard';
+import { Request, Response } from 'express';
+import { User } from '@/Interface/user.interface';
+import { AuthenticatedRequest } from '@/Interface/AuthenticatedRequest';
 
 @Controller('auth')
 @UseGuards(GuestGuard)
@@ -27,8 +30,13 @@ export class AuthController {
 
   @UseGuards(GoogleAuthGuard)
   @Get('google/callback')
-  async googleCallback(@Req() req, @Res() res) {
-    const response = await this.authService.logInUser(req.user.id);
+  async googleCallback(@Req() req: AuthenticatedRequest, @Res() res: Response) {
+    const response = await this.authService.logInUser({
+      email: req.user.email,
+      password: req.user.password,
+      googleAuth: true,
+    });
+
     res.redirect(`http://localhost:3001?token=${response.accessToken}`);
   }
 }

@@ -12,40 +12,40 @@ import { Gender } from '../enums/user-gender.enum';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column()
-  username: string;
+  username!: string;
 
   @Column({ unique: true })
-  email: string;
+  email!: string;
 
   @Column({ select: false })
-  password: string;
+  password!: string;
 
   @Column()
-  phoneNumber: string;
+  phoneNumber!: string;
 
   @Column({ type: 'enum', enum: Gender, default: Gender.OTHER })
-  Gender: Gender;
+  Gender?: Gender;
 
   @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
-  role: UserRole;
+  role?: UserRole;
 
   @Column({ default: 0 })
-  numberOfAttempts: number;
+  numberOfAttempts!: number;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt?: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt?: Date;
 
   @Type(() => Date)
   @Column({ type: 'timestamp', nullable: true, default: null })
-  userBlockedUntil: Date;
+  userBlockedUntil!: Date | null;
 
   @Type(() => Date)
   @Column({ type: 'timestamp', nullable: true })
-  lastLogin: Date;
+  lastLogin?: Date;
 }

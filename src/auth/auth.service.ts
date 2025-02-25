@@ -18,9 +18,8 @@ export class AuthService {
     const user = await this.userRepository.findByEmailRetunPassword(
       signInDto.email,
     );
-    const currentDate = new Date();
 
-    
+    const currentDate = new Date();
 
     if (!user) {
       throw new UnauthorizedException('Access Denied');
@@ -37,21 +36,23 @@ export class AuthService {
       );
     }
 
-    const isPasswordCorrect = await bcrypt.compare(
-      signInDto.password,
-      user.password,
-    );
+    if (signInDto.googleAuth !== true) {
+      const isPasswordCorrect = await bcrypt.compare(
+        signInDto.password,
+        user.password,
+      );
 
-    if (!isPasswordCorrect) {
-      await this.userRepository.passwordNumberOfAttemptsCount(user.id, false);
+      if (!isPasswordCorrect) {
+        await this.userRepository.passwordNumberOfAttemptsCount(user.id, false);
 
-      if (user.numberOfAttempts > 2) {
-        await this.userRepository.UserBlockedDateCount(user.id, false);
+        if (user.numberOfAttempts > 2) {
+          await this.userRepository.UserBlockedDateCount(user.id, false);
 
-        throw new UnauthorizedException('User is blocked. Try again later.');
+          throw new UnauthorizedException('User is blocked. Try again later.');
+        }
+
+        throw new UnauthorizedException('Access Denied');
       }
-
-      throw new UnauthorizedException('Access Denied');
     }
 
     this.userRepository.passwordNumberOfAttemptsCount(user.id, true);
@@ -74,6 +75,7 @@ export class AuthService {
       googleUser.email,
     );
     if (user) return user;
+
     return await this.userRepository.create(googleUser);
   }
 }

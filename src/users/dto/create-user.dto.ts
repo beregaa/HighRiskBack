@@ -12,25 +12,25 @@ import { Gender } from '../enums/user-gender.enum';
 export class CreateUserDto {
   @IsString()
   @Length(3, 20)
-  username: string;
+  username!: string;
 
   @IsEmail()
-  email: string;
+  email!: string;
   
   @IsEnum(Gender)
-  gender: Gender;
+  gender!: Gender;
 
   @IsString()
   @Length(8, 20)
-  password: string;
+  password!: string;
 
   @IsString()
   @Length(8, 20)
-  confirmPassword: string;
+  confirmPassword!: string;
 
   @IsBoolean()
-  termsAccepted: boolean;
+  termsAccepted!: boolean;
 
   @IsPhoneNumber('GE')
-  phoneNumber: string;
+  phoneNumber!: string;
 }

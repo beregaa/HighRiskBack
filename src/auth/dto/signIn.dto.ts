@@ -1,9 +1,13 @@
-import { IsString } from 'class-validator';
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
 
 export class signInDto {
   @IsString()
-  email: string;
-  
+  email!: string;
+
   @IsString()
-  password: string;
+  password!: string;
+
+  @IsBoolean()
+  @IsOptional()
+  googleAuth?: boolean = false;
 }

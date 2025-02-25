@@ -21,7 +21,7 @@ export class ProductsController {
 
   @UseGuards(AdminGuard)
   @Post()
-  create(@Body() createProductDto: CreateProductDto, @Req() requsest) {
+  create(@Body() createProductDto: CreateProductDto, @Req() requsest: Request) {
     return this.productsService.create(createProductDto);
   }
 
@@ -34,7 +34,7 @@ export class ProductsController {
   findOne(@Param('id') id: string) {
     return this.productsService.findOne(+id);
   }
-  
+
   @UseGuards(AdminGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {

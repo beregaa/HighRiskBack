@@ -25,7 +25,7 @@ export class UsersRepository {
 
       return user;
     } catch (err) {
-      if (err.errno == 1062) {
+      if (err == 1062) {
         throw new BadRequestException('this emaii already exists');
       }
     }
@@ -49,6 +49,10 @@ export class UsersRepository {
   async passwordNumberOfAttemptsCount(id: number, reset: boolean = false) {
     const user = await this.useRepository.findOne({ where: { id: id } });
 
+
+    if (!user) {
+      throw new BadRequestException('user not found');
+    }
     if (reset) {
       user.numberOfAttempts = 0;
     } else {
@@ -60,6 +64,11 @@ export class UsersRepository {
 
   async UserBlockedDateCount(id: number, reset: boolean = false) {
     const user = await this.useRepository.findOne({ where: { id: id } });
+
+    if (!user) {
+      throw new BadRequestException('user not found');
+      
+    }
 
     if (reset) {
       user.userBlockedUntil = null;
