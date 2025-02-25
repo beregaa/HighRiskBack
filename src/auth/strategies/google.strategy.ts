@@ -1,6 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy, VerifyCallback } from 'passport-google-oauth20';
+import {
+  Strategy,
+  VerifyCallback,
+  StrategyOptions,
+} from 'passport-google-oauth20';
 import googleOauthConfig from '../config/google-oauth.config';
 import { ConfigType } from '@nestjs/config';
 import { AuthService } from '../auth.service';
@@ -13,10 +17,16 @@ export class GoogleStrategy extends PassportStrategy(Strategy) {
     private googleConfiguration: ConfigType<typeof googleOauthConfig>,
     private authService: AuthService,
   ) {
-    super({
-      clientID: googleConfiguration.clientId,
-      clientSecret: googleConfiguration.clientSecret,
-      callbackURL: googleConfiguration.callbackUrl,
+    const { clientId, clientSecret, callbackUrl } = googleConfiguration;
+
+    if (!clientId || !clientSecret || !callbackUrl) {
+      throw new Error('Google OAuth configuration is missing critical values.');
+    }
+
+    super(<StrategyOptions>{
+      clientID: clientId,
+      clientSecret: clientSecret,
+      callbackURL: callbackUrl,
       scope: ['email', 'profile'],
     });
   }
@@ -30,9 +40,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy) {
     console.log({ profile });
     const user = await this.authService.validateGoogleUser({
       email: profile.emails[0].value,
-      //   firstName: profile.name.givenName,
-      //   lastName: profile.name.familyName,
-      //   avatarUrl: profile.photos[0].value,
       password: '',
       username: '',
       gender: Gender.MALE,
@@ -40,7 +47,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy) {
       termsAccepted: false,
       phoneNumber: '',
     });
-    // done(null, user);
     return user;
   }
 }

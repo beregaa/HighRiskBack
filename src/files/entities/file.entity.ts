@@ -3,17 +3,17 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 @Entity({ name: 'files' })
 export class FileEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column()
-  url: string;
+  url!: string;
 
   @Column()
-  key: string;
+  key!: string;
 
   @Column()
-  bucket: string;
+  bucket!: string;
 
   @Column()
-  fileName: string;
+  fileName!: string;
 }
