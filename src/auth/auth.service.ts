@@ -3,6 +3,9 @@ import { UsersRepository } from 'src/users/users.repository';
 import * as bcrypt from 'bcrypt';
 import { signInDto } from './dto/signIn.dto';
 import { JwtService } from '@nestjs/jwt';
+import { compare } from 'bcrypt';
+import { UsersService } from 'src/users/users.service';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -16,6 +19,8 @@ export class AuthService {
       signInDto.email,
     );
     const currentDate = new Date();
+
+    
 
     if (!user) {
       throw new UnauthorizedException('Access Denied');
@@ -60,7 +65,15 @@ export class AuthService {
     });
 
     return {
-      accessToken: jwtToken,  
+      accessToken: jwtToken,
     };
+  }
+
+  async validateGoogleUser(googleUser: CreateUserDto) {
+    const user = await this.userRepository.findByEmailRetunPassword(
+      googleUser.email,
+    );
+    if (user) return user;
+    return await this.userRepository.create(googleUser);
   }
 }

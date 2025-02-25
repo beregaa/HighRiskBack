@@ -11,10 +11,12 @@ import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './auth/conststs';
 
-
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      expandVariables: true,
+    }),
 
     JwtModule.register({
       global: true,
@@ -31,7 +33,7 @@ import { jwtConstants } from './auth/conststs';
       database: process.env.DATABASE_NAME,
       entities: [Product, User],
       synchronize: true,
-      logging: true, 
+      logging: true,
     }),
 
     ProductsModule,
