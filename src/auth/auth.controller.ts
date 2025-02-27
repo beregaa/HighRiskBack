@@ -36,6 +36,6 @@ export class AuthController {
       googleAuth: true,
     });
 
-    res.redirect(`https://high-risk-front.vercel.app/?token=${response.accessToken}`);
+    res.redirect(`http://localhost:3000/?token=${response.accessToken}`);
   }
 }
