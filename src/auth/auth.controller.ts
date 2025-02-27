@@ -36,6 +36,6 @@ export class AuthController {
       googleAuth: true,
     });
 
-    res.redirect(`https://highriskback.onrender.com?token=${response.accessToken}`);
+    res.redirect(`https://high-risk-front.vercel.app/?token=${response.accessToken}`);
   }
 }
