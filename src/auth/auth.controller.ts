@@ -36,6 +36,6 @@ export class AuthController {
       googleAuth: true,
     });
 
-    res.redirect(`http://localhost:3001?token=${response.accessToken}`);
+    res.redirect(`https://highriskback.onrender.com?token=${response.accessToken}`);
   }
 }
