@@ -14,8 +14,7 @@ import { signInDto } from './dto/signIn.dto';
 import { GuestGuard } from './gurds/guest.gurd';
 import { GoogleAuthGuard } from './guards/google-auth/google-auth.guard';
 import { Request, Response } from 'express';
-import { User } from '@/Interface/user.interface';
-import { AuthenticatedRequest } from '@/Interface/AuthenticatedRequest';
+import { AuthenticatedRequest } from 'src/Interface/AuthenticatedRequest';
 
 @Controller('auth')
 @UseGuards(GuestGuard)

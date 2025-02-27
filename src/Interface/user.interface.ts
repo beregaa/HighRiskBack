@@ -1,5 +1,5 @@
-import { Gender } from '@/users/enums/user-gender.enum';
-import { UserRole } from '@/users/enums/user-role.enum';
+import { Gender } from "aws-sdk/clients/polly";
+import { UserRole } from "aws-sdk/clients/workmail";
 
 export interface User {
   id: number;

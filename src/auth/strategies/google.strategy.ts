@@ -8,7 +8,7 @@ import {
 import googleOauthConfig from '../config/google-oauth.config';
 import { ConfigType } from '@nestjs/config';
 import { AuthService } from '../auth.service';
-import { Gender } from 'src/users/enums/user-gender.enum';
+import { Gender } from '../../users/enums/user-gender.enum';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy) {

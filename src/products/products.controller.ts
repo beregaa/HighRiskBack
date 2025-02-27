@@ -12,8 +12,7 @@ import {
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { AdminGuard } from 'src/auth/gurds/admin-gurd';
-import { UserRole } from 'src/users/enums/user-role.enum';
+import { AdminGuard } from '../auth/gurds/admin-gurd';
 
 @Controller('products')
 export class ProductsController {

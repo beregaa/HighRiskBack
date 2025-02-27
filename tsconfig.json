@@ -1,31 +1,19 @@
 {
   "compilerOptions": {
-    "module": "commonjs", // Use CommonJS for Node.js compatibility
-    "declaration": true, // Generate .d.ts files for type definitions
-    "removeComments": true, // Remove comments in the output
-    "emitDecoratorMetadata": true, // Required for NestJS decorators
-    "experimentalDecorators": true, // Required for NestJS decorators
-    "allowSyntheticDefaultImports": true, // Allow synthetic default imports
-    "target": "ES2021", // Target ES2021 for modern JavaScript features
-    "sourceMap": true, // Generate source maps for debugging
-    "outDir": "./dist", // Output directory for compiled files
-    "rootDir": "./src", // Root directory for source files
-    "baseUrl": "./", // Base directory for module resolution
+    "target": "ES6",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "baseUrl": "./",            // Set base URL to the project root
     "paths": {
-      "@/*": ["src/*"] // Map @/ to src/ for module aliases
-    },
-    "incremental": true, // Enable incremental compilation
-    "skipLibCheck": false, // Check all library files for type errors
-    "strict": true, // Enable all strict type-checking options
-    "noImplicitAny": true, // Disallow implicit `any` types
-    "strictNullChecks": true, // Enable strict null checks
-    "strictBindCallApply": true, // Enable strict checks for `bind`, `call`, and `apply`
-    "forceConsistentCasingInFileNames": true, // Ensure consistent file name casing
-    "noFallthroughCasesInSwitch": true, // Disallow fallthrough in switch cases
-    "esModuleInterop": true, // Enable ES module interop
-    "moduleResolution": "node", // Use Node.js module resolution
-    "resolveJsonModule": true // Allow importing JSON modules
+      "src/*": ["./src/*"]      // Map src/* to ./src/*
+    }
   },
-  "include": ["src/**/*"], // Include all files in the src directory
-  "exclude": ["node_modules", "dist", "test", "**/*.spec.ts"] // Exclude unnecessary files
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }

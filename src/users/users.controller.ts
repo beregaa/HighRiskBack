@@ -11,8 +11,7 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { AdminGuard } from 'src/auth/gurds/admin-gurd';
-import { GuestGuard } from 'src/auth/gurds/guest.gurd';
+import { AdminGuard } from '../auth/gurds/admin-gurd';
 
 @Controller('users')
 export class UsersController {
