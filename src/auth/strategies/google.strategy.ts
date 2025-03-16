@@ -38,15 +38,20 @@ export class GoogleStrategy extends PassportStrategy(Strategy) {
     done: VerifyCallback,
   ) {
     console.log({ profile });
+    
+    const username = profile.displayName || profile.emails[0].value.split('@')[0];
+    
     const user = await this.authService.validateGoogleUser({
       email: profile.emails[0].value,
-      password: '',
-      username: '',
-      gender: Gender.MALE,
+      password: '',  
+      username : username,     
+      gender: Gender.MALE,  
       confirmPassword: '',
       termsAccepted: false,
       phoneNumber: '',
     });
+  
     return user;
   }
+  
 }
