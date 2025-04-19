@@ -4,24 +4,45 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
 import { Repository } from 'typeorm';
+import { FilesService } from 'src/files/files.service';
 
 @Injectable()
 export class productsRepository {
   constructor(
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
+    private readonly filesService: FilesService,
   ) {}
 
-  create(createProductDto: CreateProductDto) {
+  create(createProductDto: CreateProductDto, files: Express.Multer.File[]) {
     const newProduct = new Product();
 
     newProduct.name = createProductDto.name;
-    
+
+    this.filesService.uploadFiles(files, newProduct);
     return this.productRepository.save(newProduct);
   }
 
-  findAll() {
-    return this.productRepository.find();
+  async findAll() {
+    const products = await this.productRepository.find({
+      relations: ['files'],
+    });
+
+    return await Promise.all(
+      products.map(async (product) => {
+        const updatedFiles = await Promise.all(
+          product.files.map(async (file) => {
+            const fileWithUrl = await this.filesService.getFile(file.id);
+            return fileWithUrl;
+          }),
+        );
+
+        return {
+          ...product,
+          files: updatedFiles,
+        };
+      }),
+    );
   }
 
   findOne(id: number) {

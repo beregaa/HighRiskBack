@@ -8,11 +8,15 @@ import {
   Delete,
   UseGuards,
   Req,
+  UseInterceptors,
+  UploadedFiles,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { AdminGuard } from '../auth/gurds/admin-gurd';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { FilesModule } from 'src/files/files.module';
 
 @Controller('products')
 export class ProductsController {
@@ -20,8 +24,14 @@ export class ProductsController {
 
   @UseGuards(AdminGuard)
   @Post()
-  create(@Body() createProductDto: CreateProductDto, @Req() requsest: Request) {
-    return this.productsService.create(createProductDto);
+  @UseInterceptors(FilesInterceptor('files'))
+  create(
+    @Body() createProductDto: CreateProductDto,
+    @UploadedFiles() files: Express.Multer.File[],
+    @Req() requsest: Request,
+  ) {
+    
+    return this.productsService.create(createProductDto , files);
   }
 
   @Get()
