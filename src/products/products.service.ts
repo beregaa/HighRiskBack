@@ -7,8 +7,8 @@ import { productsRepository } from './products.repository';
 export class ProductsService {
   constructor(private readonly productsRepo: productsRepository) {}
 
-  create(createProductDto: CreateProductDto) {
-    return this.productsRepo.create(createProductDto);
+  create(createProductDto: CreateProductDto , files: Express.Multer.File[]) {
+    return this.productsRepo.create(createProductDto , files);
   }
 
   findAll() {

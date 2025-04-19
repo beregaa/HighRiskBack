@@ -10,6 +10,8 @@ import { User } from './users/entities/user.entity';
 import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './auth/conststs';
+import { FilesModule } from './files/files.module';
+import { FileEntity } from './files/entities/file.entity';
 
 @Module({
   imports: [
@@ -21,7 +23,7 @@ import { jwtConstants } from './auth/conststs';
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '3600s' },
+      signOptions: { expiresIn: '3600000s' },
     }),
 
     TypeOrmModule.forRoot({
@@ -31,16 +33,15 @@ import { jwtConstants } from './auth/conststs';
       username: process.env.DATABASE_USERNAME,
       password: process.env.DATABASE_PASSWORD + '$$',
       database: process.env.DATABASE_NAME,
-      entities: [Product, User],
+      entities: [Product, User, FileEntity , ],
+      autoLoadEntities: true,
       synchronize: true,
-      // logging: true,
     }),
 
     ProductsModule,
-
     UsersModule,
-
     AuthModule,
+    FilesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

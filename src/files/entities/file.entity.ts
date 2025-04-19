@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Product } from '../../products/entities/product.entity';
+import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'files' })
 export class FileEntity {
@@ -6,7 +7,7 @@ export class FileEntity {
   id!: number;
 
   @Column()
-  url!: string;
+  url?: string;
 
   @Column()
   key!: string;
@@ -16,4 +17,7 @@ export class FileEntity {
 
   @Column()
   fileName!: string;
+
+  @ManyToOne(() => Product, (product) => product.files, { onDelete: 'CASCADE' })
+  product!: Product;
 }
