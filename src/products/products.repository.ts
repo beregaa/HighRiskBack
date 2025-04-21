@@ -14,13 +14,16 @@ export class productsRepository {
     private readonly filesService: FilesService,
   ) {}
 
-  create(createProductDto: CreateProductDto, files: Express.Multer.File[]) {
+  async create(
+    createProductDto: CreateProductDto,
+    files: Express.Multer.File[],
+  ) {
     const newProduct = new Product();
 
     newProduct.name = createProductDto.name;
 
-    this.filesService.uploadFiles(files, newProduct);
-    return this.productRepository.save(newProduct);
+    await this.filesService.uploadFiles(files, newProduct);
+    return await this.productRepository.save(newProduct);
   }
 
   async findAll() {
@@ -36,6 +39,8 @@ export class productsRepository {
             return fileWithUrl;
           }),
         );
+        console.log(process.memoryUsage());
+
 
         return {
           ...product,
