@@ -20,11 +20,11 @@ import { FileEntity } from './files/entities/file.entity';
       expandVariables: true,
     }),
 
-    JwtModule.register({
-      global: true,
-      secret: jwtConstants.secret,
-      signOptions: { expiresIn: '3600000s' },
-    }),
+    // JwtModule.register({
+    //   global: true,
+    //   secret: jwtConstants.secret,
+    //   signOptions: { expiresIn: '3600000s' },
+    // }),
 
     TypeOrmModule.forRoot({
       type: 'mysql',
@@ -34,13 +34,13 @@ import { FileEntity } from './files/entities/file.entity';
       password: process.env.DATABASE_PASSWORD + '$$',
       database: process.env.DATABASE_NAME,
       // entities: [Product, User, FileEntity , ],
-      autoLoadEntities: true,
-      synchronize: true,
+      // autoLoadEntities: true,
+      // synchronize: true,
     }),
 
     // ProductsModule,
-    UsersModule,
-    AuthModule,
+    // UsersModule,
+    // AuthModule,
     // FilesModule,
   ],
   controllers: [AppController],
