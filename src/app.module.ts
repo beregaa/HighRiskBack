@@ -41,7 +41,7 @@ import { FileEntity } from './files/entities/file.entity';
     ProductsModule,
     UsersModule,
     AuthModule,
-    FilesModule,
+    // FilesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

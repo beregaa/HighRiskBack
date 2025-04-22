@@ -39,7 +39,6 @@ export class productsRepository {
             return fileWithUrl;
           }),
         );
-        console.log(process.memoryUsage());
 
 
         return {
